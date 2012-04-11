@@ -13,4 +13,9 @@ current steps:
 	1. if the appropriate sequence table has not been downloaded, run 'prepare_acs_subject_file
 	1. run 'create_acs_table'
 	1. run the created SQL commad
-		
+	
+
+TODO:
+* general cleanup of code
+* check for subject file before downloading
+* creation of turnkey downloading of subject file
