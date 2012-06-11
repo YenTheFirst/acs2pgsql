@@ -1,6 +1,6 @@
-require 'download_data'
-require 'parse_lookup_table'
-require 'create_sql_table'
+require './download_data'
+require './parse_lookup_table'
+require './create_sql_table'
 
 task :setup do |t|
   download_geographies

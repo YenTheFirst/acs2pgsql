@@ -8,7 +8,7 @@ def prepare_acs_subject_file(seqnum)
   seqnum = "%04d000" % seqnum
 
   #check if the subject file already exists for each state
-  return if STATES.all do |state|
+  return if STATES.all? do |state|
     filename = "all_data/#{type}20105#{state}#{seqnum}.txt"
     File.exists? filename
   end
