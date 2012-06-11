@@ -13,6 +13,19 @@ def parse_geo(line)
   }
 end
 
+def each_data_line(geo_file, est_file, moe_file)
+  geo_file.each do |geo_line|
+    geo_line = parse_geo(geo_line)
+    est_line = est_file.readline().split(',').map(&:strip)
+    moe_line = moe_file.readline().split(',').map(&:strip)
+    if geo_line["LOGRECNO"] != est_line[5] or geo_line["LOGRECNO"] != moe_line[5]
+      raise "Invalid Lines"
+    end
+
+    yield geo_line, est_line, moe_line
+  end
+end
+
 def create_acs_table(table_name, sequence_num, column_range)
   Dir.chdir('all_data')
 
@@ -25,23 +38,10 @@ def create_acs_table(table_name, sequence_num, column_range)
     geo_file = File.new("g20105#{state}.txt", "r")
     est_file = File.new("e20105%s%04d000.txt" % [state, sequence_num], "r")
     moe_file = File.new("m20105%s%04d000.txt" % [state, sequence_num], "r")
-    
-    geo_file.each do |geo_line|
-      geo_line = parse_geo(geo_line)
-      est_line = est_file.readline().split(',').map(&:strip)
-      moe_line = moe_file.readline().split(',').map(&:strip)
 
+    each_data_line(geo_file, est_file, moe_file) do |geo_line, est_line, moe_line|
       #don't pull records with a geographic limitation, for now
       next unless geo_line["COMPONENT"] == '00'
-
-      #ensure we're still valid
-      if geo_line["LOGRECNO"] != est_line[5] or geo_line["LOGRECNO"] != moe_line[5]
-        $stderr.puts("lines that don't match up!")
-        $stderr.puts geo_line
-        $stderr.puts est_line*", "
-        $stderr.puts moe_line*", "
-        exit 1
-      end
 
       #get the relevant columns
       columns = est_line[column_range].zip(moe_line[column_range])
