@@ -5,6 +5,8 @@ def download_geographies
 end
 
 def prepare_acs_subject_file(seqnum)
+  seqnum = "%04d000" % seq_num
+
   #check if the subject file already exists for each state
   return if STATES.all do |state|
     filename = "all_data/#{type}20105#{state}#{seqnum}.txt"
