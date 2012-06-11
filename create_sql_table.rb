@@ -14,9 +14,9 @@ def parse_geo(line)
 end
 
 def with_data_files(state, sequence_num)
-  File.open("g20105#{state}.txt", "r") do |geo_file|
-    File.open("e20105%s%04d000.txt" % [state, sequence_num], "r") do |est_file|
-      File.new("m20105%s%04d000.txt" % [state, sequence_num], "r") do |moe_file|
+  File.open("all_data/g20105#{state}.txt", "r") do |geo_file|
+    File.open("all_data/e20105%s%04d000.txt" % [state, sequence_num], "r") do |est_file|
+      File.new("all_data/m20105%s%04d000.txt" % [state, sequence_num], "r") do |moe_file|
         yield geo_file, est_file, moe_file
       end
     end
@@ -65,8 +65,6 @@ def write_creation_sql(table_name, csv_file_name, column_range)
 end
 
 def create_acs_table(table_name, sequence_num, column_range)
-  Dir.chdir('all_data')
-
   out_file_name = "#{table_name}.csv"
   File.open(out_file_name, 'w') do |out_file|
 
@@ -90,5 +88,4 @@ def create_acs_table(table_name, sequence_num, column_range)
 
   write_creation_sql(table_name, out_file_name, column_range)
 
-  Dir.chdir('..')
 end
