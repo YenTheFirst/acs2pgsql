@@ -1,8 +1,8 @@
-#download all geo files:
-#mkdir all_data
-#wget -r -nd -nc 'ftp://ftp.census.gov/acs2010_5yr/summaryfile/2006-2010_ACSSF_By_State_By_Sequence_Table_Subset' -A 'g*.txt' -P all_data
-
 STATES = ['ak', 'al', 'ar', 'az', 'ca', 'co', 'ct', 'dc', 'de', 'fl', 'ga', 'hi', 'la', 'id', 'il', 'in', 'ks', 'ky', 'la', 'ma', 'md', 'me', 'mi', 'mn', 'mo', 'ms', 'mt', 'nc', 'nd', 'ne', 'nh', 'nj', 'nm', 'nv', 'ny', 'oh', 'ok', 'or', 'pa', 'pr', 'ri', 'sc', 'sd', 'tn', 'tx', 'ut', 'va', 'vt', 'wa', 'wi', 'wv', 'wy']
+
+def download_geographies
+  `wget -r -nd -nc 'ftp://ftp.census.gov/acs2010_5yr/summaryfile/2006-2010_ACSSF_By_State_By_Sequence_Table_Subset' -A 'g*.txt' -P all_data`
+end
 
 def prepare_acs_subject_file(seqnum)
   #todo: check if downloaded already
