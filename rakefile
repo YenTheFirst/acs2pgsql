@@ -1,0 +1,16 @@
+require 'download_data'
+require 'parse_lookup_table'
+require 'create_sql_table'
+
+task :setup do |t|
+  download_geographies
+  download_lookup_table
+end
+
+task :create_acs_table, :tablename do |t,args|
+  tablename = args[:tablename]
+  sequence_num, col_range = lookup_table(tablename)
+  prepare_acs_subject_file(sequence_num)
+  create_acs_table(tablename, sequence_num, col_range)
+end
+
