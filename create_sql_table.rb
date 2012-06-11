@@ -40,6 +40,30 @@ def each_data_line(state, sequence_num)
   end
 end
 
+def write_creation_sql(table_name, csv_file_name, column_range)
+  #create the SQL loading command
+  File.open("create_#{table_name}.sql", "w") do |f|
+    f.puts 'SET CLIENT_ENCODING TO UTF8;'
+    f.puts 'SET STANDARD_CONFORMING_STRINGS TO ON;'
+    f.puts 'BEGIN;'
+    f.puts ''
+    sql_name = "census_acs_#{table_name.downcase}"
+    f.puts "CREATE TABLE \"#{sql_name}\"("
+    f.puts "  sumlev varchar(3),"
+    f.puts "  geoid varchar(40),"
+    num_cols = column_range.end - column_range.begin + 1
+    f << (1..num_cols).map do |col_num|
+      "  col_%04d integer, margin_%04d integer" % [col_num, col_num]
+    end * ",\n"
+    f.puts ');'
+    f.puts ''
+    f.puts "\\copy #{sql_name} from '#{csv_file_name}' DELIMITER '#{DELIM}' NULL ''"
+    f.puts "CREATE INDEX #{sql_name}_sumlev on #{sql_name}(sumlev);"
+    f.puts "CREATE INDEX #{sql_name}_geoid on #{sql_name}(geoid);"
+    f.puts 'COMMIT;'
+  end
+end
+
 def create_acs_table(table_name, sequence_num, column_range)
   Dir.chdir('all_data')
 
@@ -64,28 +88,7 @@ def create_acs_table(table_name, sequence_num, column_range)
   
   end
 
-  #create the SQL loading command
-  File.open("create_#{table_name}.sql", "w") do |f|
-    f.puts 'SET CLIENT_ENCODING TO UTF8;'
-    f.puts 'SET STANDARD_CONFORMING_STRINGS TO ON;'
-    f.puts 'BEGIN;'
-    f.puts ''
-    sql_name = "census_acs_#{table_name.downcase}"
-    f.puts "CREATE TABLE \"#{sql_name}\"("
-    f.puts "  sumlev varchar(3),"
-    f.puts "  geoid varchar(40),"
-    num_cols = column_range.end - column_range.begin + 1
-    f << (1..num_cols).map do |col_num|
-      "  col_%04d integer, margin_%04d integer" % [col_num, col_num]
-    end * ",\n"
-    f.puts ');'
-    f.puts ''
-    f.puts "\\copy #{sql_name} from '#{out_file_name}' DELIMITER '#{DELIM}' NULL ''"
-    f.puts "CREATE INDEX #{sql_name}_sumlev on #{sql_name}(sumlev);"
-    f.puts "CREATE INDEX #{sql_name}_geoid on #{sql_name}(geoid);"
-    f.puts 'COMMIT;'
-  end
-
+  write_creation_sql(table_name, out_file_name, column_range)
 
   Dir.chdir('..')
 end
