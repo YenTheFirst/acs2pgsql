@@ -26,19 +26,6 @@ def prepare_acs_subject_file(seqnum)
 
 end
 
-#tables:
-#sex by age B01001 10 7,55
-#houshold income in past 12 months B19001 53 7,23
-#aggregate housheold income? B19025 53 195
-#per capita income b19301 59, 172
-#aggregate income b19313 59 182
-#ACSSF,B14005,39,,7,29 CELLS,,SEX BY SCHOOL ENROLLMENT BY EDUCATIONAL ATTAINMENT BY EMPLOYMENT STATUS FOR THE POPULATION 16 TO 19 YEARS,School Enrollment
-#ACSSF,B23001,69,,7,173 CELLS,,SEX BY AGE BY EMPLOYMENT STATUS FOR THE POPULATION 16 YEARS AND OVER,Employment Status
-#ACSSF,B15001,40,,7,83 CELLS,,SEX BY AGE BY EDUCATIONAL ATTAINMENT FOR THE POPULATION 18 YEARS AND OVER,Educational Attainment
-#means of transportation to work - many tables
-#aggregate travel time to work
-#
-#
 # download_seq_num = "%04d000" % seq_num
 # in acs, prepare_acs_subject_file
 # in all_data, create_acs_table <full_table>, <seq_num>, <index-0 range>
