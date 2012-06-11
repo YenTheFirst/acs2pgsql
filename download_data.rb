@@ -5,8 +5,12 @@ def download_geographies
 end
 
 def prepare_acs_subject_file(seqnum)
-  #todo: check if downloaded already
-  #
+  #check if the subject file already exists for each state
+  return if STATES.all do |state|
+    filename = "all_data/#{type}20105#{state}#{seqnum}.txt"
+    File.exists? filename
+  end
+
   `wget -r -nc -np -nH --cut-dirs=4 'ftp://ftp.census.gov/acs2010_5yr/summaryfile/2006-2010_ACSSF_By_State_By_Sequence_Table_Subset' -A '*#{seqnum}.zip'`
   Dir.chdir('All_Geographies_Not_Tracts_Block_Groups')
     `unzip '*#{seqnum}.zip'`
