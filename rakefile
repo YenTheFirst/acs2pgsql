@@ -5,6 +5,7 @@ require './create_sql_table'
 task :setup do |t|
   download_geographies
   download_lookup_table
+  Dir.mkdir('all_data')
 end
 
 task :create_acs_table, :tablename do |t,args|
