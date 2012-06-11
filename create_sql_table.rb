@@ -44,25 +44,25 @@ def create_acs_table(table_name, sequence_num, column_range)
   Dir.chdir('all_data')
 
   out_file_name = "#{table_name}.csv"
-  out_file = File.new(out_file_name, "w")
+  File.open(out_file_name, 'w') do |out_file|
 
-  STATES.each do |state| 
-    puts "creating table for #{state}"
+    STATES.each do |state| 
+      puts "creating table for #{state}"
 
-    each_data_line(state, sequence_num) do |geo_line, est_line, moe_line|
-      #don't pull records with a geographic limitation, for now
-      next unless geo_line["COMPONENT"] == '00'
+      each_data_line(state, sequence_num) do |geo_line, est_line, moe_line|
+        #don't pull records with a geographic limitation, for now
+        next unless geo_line["COMPONENT"] == '00'
 
-      #get the relevant columns
-      columns = est_line[column_range].zip(moe_line[column_range])
+        #get the relevant columns
+        columns = est_line[column_range].zip(moe_line[column_range])
 
-      #and output
-      out_file << geo_line["SUMLEV"] << DELIM << geo_line["GEOID"][7..-1] << DELIM << columns.flatten.join(DELIM) << "\n"
+        #and output
+        out_file << geo_line["SUMLEV"] << DELIM << geo_line["GEOID"][7..-1] << DELIM << columns.flatten.join(DELIM) << "\n"
+      end
+
     end
-
-  end
   
-  out_file.close
+  end
 
   #create the SQL loading command
   File.open("create_#{table_name}.sql", "w") do |f|
