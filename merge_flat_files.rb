@@ -14,6 +14,8 @@ def parse_geo(line)
 end
 
 def create_acs_table(table_name, sequence_num, column_range)
+  Dir.chdir('all_data')
+
   out_file_name = "#{table_name}.csv"
   out_file = File.new(out_file_name, "w")
 
@@ -76,4 +78,7 @@ def create_acs_table(table_name, sequence_num, column_range)
     f.puts "CREATE INDEX #{sql_name}_geoid on #{sql_name}(geoid);"
     f.puts 'COMMIT;'
   end
+
+
+  Dir.chdir('..')
 end
