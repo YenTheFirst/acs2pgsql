@@ -9,8 +9,10 @@ def prepare_acs_subject_file(seqnum)
 
   #check if the subject file already exists for each state
   return if STATES.all? do |state|
-    filename = "all_data/#{type}20105#{state}#{seqnum}.txt"
-    File.exists? filename
+    ['m','e'].all? do |type|
+      filename = "all_data/#{type}20105#{state}#{seqnum}.txt"
+      File.exists? filename
+    end
   end
 
   current_dir = Dir.pwd
